@@ -1,0 +1,95 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="AgroMarket.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="es">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - AgroMarket-Connect</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+    <link href="~/Css/AgroMarket.css" rel="stylesheet" type="text/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div class="app-shell">
+            <!-- ========== SIDEBAR ========== -->
+            <nav class="sidebar" id="sidebar">
+                <div class="sidebar-logo">
+                    <div class="icon">&#127793;</div>
+                    <span>AgroMarket</span>
+                </div>
+
+                <div class="sidebar-section">Principal</div>
+                <a class="sidebar-item" data-page="dashboard" href="~/View/Default" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                    Panel
+                </a>
+
+                <div class="sidebar-section">M&#243;dulos</div>
+                <a class="sidebar-item" data-page="productos" href="~/View/Productos" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
+                    Productos
+                </a>
+                <a class="sidebar-item" data-page="inventario" href="~/View/Inventario" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg>
+                    Inventario
+                </a>
+                <a class="sidebar-item" data-page="catalogo" href="~/View/Catalogo" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                    Cat&#225;logo
+                </a>
+                <a class="sidebar-item" data-page="pedidos" href="~/View/Pedidos" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+                    Pedidos
+                </a>
+                <a class="sidebar-item" data-page="mapa" href="~/View/Mapa" runat="server">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    Mapa
+                </a>
+
+                <div class="sidebar-footer">
+                    <div class="sidebar-user">
+                        <div class="avatar">JP</div>
+                        <div>
+                            <div class="name">Juan P&#233;rez</div>
+                            <div class="role">Productor - Cajic&#225;</div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- ========== AREA PRINCIPAL ========== -->
+            <div class="main-area">
+                <div class="topbar">
+                    <div style="display:flex;align-items:center;gap:12px">
+                        <button type="button" class="hamburger" onclick="toggleSidebar()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+                        </button>
+                        <h2>
+                            <asp:ContentPlaceHolder ID="PageTitle" runat="server">Panel principal</asp:ContentPlaceHolder>
+                        </h2>
+                    </div>
+                    <div class="topbar-actions">
+                        <div class="search-box">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+                            <input type="text" placeholder="Buscar..." />
+                        </div>
+                        <asp:ContentPlaceHolder ID="TopBarActions" runat="server"></asp:ContentPlaceHolder>
+                    </div>
+                </div>
+
+                <div class="content-area">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <script src="<%= ResolveUrl("~/Js/AgroMarket.js") %>"></script>
+</body>
+</html>
