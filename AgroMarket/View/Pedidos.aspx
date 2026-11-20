@@ -5,7 +5,7 @@
 </asp:Content>
 
 <asp:Content ID="ActionsContent" ContentPlaceHolderID="TopBarActions" runat="server">
-    <button type="button" class="btn-agro btn-agro-primary btn-agro-sm">+ Nuevo pedido</button>
+    <button type="button" class="btn-agro btn-agro-primary btn-agro-sm" onclick="openModalPedido()">+ Nuevo pedido</button>
 </asp:Content>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
@@ -139,6 +139,108 @@
                 </div>
                 <asp:Button ID="btnMarcarListo" runat="server" Text="Marcar como listo"
                     CssClass="btn-agro btn-agro-primary btn-agro-sm" OnClick="btnMarcarListo_Click" />
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Pedido -->
+    <div class="modal-agro-overlay" id="modalPedido" style="display:none">
+        <div class="modal-agro">
+            <h3>Nuevo pedido</h3>
+
+            <div class="form-group">
+                <label>Comprador</label>
+                <asp:DropDownList ID="ddlComprador" runat="server">
+                    <asp:ListItem Text="Seleccione comprador..." Value="" />
+                    <asp:ListItem Text="Restaurante El Fog&#243;n - Cajic&#225;" Value="1" />
+                    <asp:ListItem Text="Tienda Do&#241;a Mar&#237;a - Zipaquir&#225;" Value="2" />
+                    <asp:ListItem Text="Plaza Cajic&#225;" Value="3" />
+                    <asp:ListItem Text="Carlos Ram&#237;rez - Ch&#237;a" Value="4" />
+                    <asp:ListItem Text="Cooperativa Sabana - Cogua" Value="5" />
+                </asp:DropDownList>
+            </div>
+
+            <div class="detail-section" style="margin-bottom:16px">
+                <h3>Agregar productos al pedido</h3>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Producto</label>
+                        <asp:DropDownList ID="ddlProductoPedido" runat="server">
+                            <asp:ListItem Text="Seleccione..." Value="" />
+                            <asp:ListItem Text="Papa criolla - $2.800/kg" Value="papa_criolla" />
+                            <asp:ListItem Text="Zanahoria - $2.400/kg" Value="zanahoria" />
+                            <asp:ListItem Text="Cebolla cabezona - $3.200/kg" Value="cebolla" />
+                            <asp:ListItem Text="Arveja verde - $5.600/kg" Value="arveja" />
+                            <asp:ListItem Text="Tomate chonto - $3.000/kg" Value="tomate" />
+                            <asp:ListItem Text="Lechuga crespa - $1.800/und" Value="lechuga" />
+                        </asp:DropDownList>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad</label>
+                        <asp:TextBox ID="txtCantidadPedido" runat="server" TextMode="Number" placeholder="0"></asp:TextBox>
+                    </div>
+                </div>
+                <button type="button" class="btn-agro btn-agro-secondary btn-agro-sm" onclick="agregarProductoPedido()">+ Agregar producto</button>
+
+                <!-- Tabla de productos agregados -->
+                <div class="data-table-wrap" style="margin-top:12px">
+                    <table class="data-table" id="tablaProductosPedido">
+                        <thead>
+                            <tr>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio unit.</th>
+                                <th>Subtotal</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="bodyProductosPedido">
+                            <tr id="filaPedidoEjemplo">
+                                <td>Papa criolla</td>
+                                <td>50 kg</td>
+                                <td>$2.800</td>
+                                <td>$140.000</td>
+                                <td><button type="button" class="btn-agro btn-agro-danger btn-agro-sm" onclick="quitarProductoPedido(this)">&#10005;</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Fecha de entrega estimada</label>
+                    <asp:TextBox ID="txtFechaEntrega" runat="server" TextMode="Date"></asp:TextBox>
+                </div>
+                <div class="form-group">
+                    <label>Direcci&#243;n de entrega</label>
+                    <asp:TextBox ID="txtDireccionEntrega" runat="server" placeholder="Cra 5 #10-20, Cajic&#225;"></asp:TextBox>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Observaciones</label>
+                <asp:TextBox ID="txtObservaciones" runat="server" TextMode="MultiLine"
+                    placeholder="Instrucciones especiales de entrega, horario preferido..."></asp:TextBox>
+            </div>
+
+            <!-- Resumen del pedido -->
+            <div style="background:var(--surface-alt);border-radius:var(--radius-sm);padding:14px 16px;margin-bottom:8px">
+                <div class="detail-row">
+                    <span class="label">Productos</span>
+                    <span class="val" id="totalProductosPedido">1 producto</span>
+                </div>
+                <div class="detail-row" style="border-top:1px solid var(--border);padding-top:8px;margin-top:4px">
+                    <span class="label" style="font-weight:600;color:var(--fg)">Total estimado</span>
+                    <span class="val" style="font-size:16px;color:var(--accent)" id="totalPedido">$140.000</span>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-agro btn-agro-secondary" onclick="closeModalPedido()">Cancelar</button>
+                <asp:Button ID="btnCrearPedido" runat="server" Text="Crear pedido"
+                    CssClass="btn-agro btn-agro-primary" OnClick="btnCrearPedido_Click" />
             </div>
         </div>
     </div>

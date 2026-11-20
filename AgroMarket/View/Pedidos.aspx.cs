@@ -12,5 +12,9 @@ namespace AgroMarket.View
         protected void btnMarcarListo_Click(object sender, EventArgs e)
         {
         }
+
+        protected void btnCrearPedido_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

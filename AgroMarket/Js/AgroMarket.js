@@ -80,13 +80,98 @@ function selectOrder(row) {
     row.style.background = 'var(--accent-light)';
 }
 
+// --- Modal de nuevo pedido ---
+var productosPedido = {
+    'papa_criolla':  { nombre: 'Papa criolla',     precio: 2800, unidad: 'kg' },
+    'zanahoria':     { nombre: 'Zanahoria',        precio: 2400, unidad: 'kg' },
+    'cebolla':       { nombre: 'Cebolla cabezona', precio: 3200, unidad: 'kg' },
+    'arveja':        { nombre: 'Arveja verde',     precio: 5600, unidad: 'kg' },
+    'tomate':        { nombre: 'Tomate chonto',    precio: 3000, unidad: 'kg' },
+    'lechuga':       { nombre: 'Lechuga crespa',   precio: 1800, unidad: 'und' }
+};
+
+function openModalPedido() {
+    var modal = document.getElementById('modalPedido');
+    if (modal) modal.style.display = 'flex';
+}
+
+function closeModalPedido() {
+    var modal = document.getElementById('modalPedido');
+    if (modal) modal.style.display = 'none';
+}
+
+function formatPrecio(valor) {
+    return '$' + valor.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function agregarProductoPedido() {
+    var select = document.querySelector('[id$="ddlProductoPedido"]');
+    var inputCantidad = document.querySelector('[id$="txtCantidadPedido"]');
+    if (!select || !inputCantidad) return;
+
+    var productoKey = select.value;
+    var cantidad = parseInt(inputCantidad.value);
+    if (!productoKey || !cantidad || cantidad <= 0) return;
+
+    var producto = productosPedido[productoKey];
+    if (!producto) return;
+
+    var subtotal = producto.precio * cantidad;
+    var tbody = document.getElementById('bodyProductosPedido');
+
+    // Quitar fila ejemplo si existe
+    var filaEjemplo = document.getElementById('filaPedidoEjemplo');
+    if (filaEjemplo) filaEjemplo.remove();
+
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+        '<td>' + producto.nombre + '</td>' +
+        '<td>' + cantidad + ' ' + producto.unidad + '</td>' +
+        '<td>' + formatPrecio(producto.precio) + '</td>' +
+        '<td>' + formatPrecio(subtotal) + '</td>' +
+        '<td><button type="button" class="btn-agro btn-agro-danger btn-agro-sm" onclick="quitarProductoPedido(this)">&#10005;</button></td>';
+    tr.setAttribute('data-subtotal', subtotal);
+    tbody.appendChild(tr);
+
+    // Limpiar seleccion
+    select.value = '';
+    inputCantidad.value = '';
+
+    actualizarTotalPedido();
+}
+
+function quitarProductoPedido(btn) {
+    var fila = btn.closest('tr');
+    if (fila) fila.remove();
+    actualizarTotalPedido();
+}
+
+function actualizarTotalPedido() {
+    var filas = document.querySelectorAll('#bodyProductosPedido tr');
+    var total = 0;
+    var count = 0;
+    for (var i = 0; i < filas.length; i++) {
+        var sub = filas[i].getAttribute('data-subtotal');
+        if (sub) {
+            total += parseInt(sub);
+            count++;
+        }
+    }
+    var spanTotal = document.getElementById('totalPedido');
+    var spanCount = document.getElementById('totalProductosPedido');
+    if (spanTotal) spanTotal.textContent = formatPrecio(total);
+    if (spanCount) spanCount.textContent = count + (count === 1 ? ' producto' : ' productos');
+}
+
 // --- Inicializacion al cargar ---
 document.addEventListener('DOMContentLoaded', function () {
-    // Cerrar modal al hacer clic fuera
-    var modal = document.getElementById('modalProducto');
-    if (modal) {
-        modal.addEventListener('click', function (e) {
-            if (e.target === modal) closeModalProducto();
-        });
+    // Cerrar modales al hacer clic fuera
+    var modales = document.querySelectorAll('.modal-agro-overlay');
+    for (var i = 0; i < modales.length; i++) {
+        (function (modal) {
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) modal.style.display = 'none';
+            });
+        })(modales[i]);
     }
 });
